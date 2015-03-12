@@ -10,7 +10,10 @@ vagrant ssh mailtest
 
 ## URL's
 Fermata Web UI = http://localhost:9092
+
 Fermata SMTP = smtp://localhost:2500
+
+Web UI for Sending Test Emails = http://localhost/
 
 # Reference
 
