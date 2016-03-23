@@ -16,7 +16,7 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "puppetlabs/centos-7.2-64-puppet"
+  config.vm.box = "puppetlabs/centos-6.6-64-puppet"
   config.vm.box_check_update = true
 
   config.vm.provider :virtualbox do |vb, override|
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
 
 
   boxes = [
-    { :name => :mailtest, :ip => '10.0.0.20', :memory => 1024, :puppetmanifest => 'vagrant.pp' }
+    { :name => :mailtest, :ip => '10.0.0.20', :memory => 1024, :puppetmanifest => 'vagrant.pp', :puppetenv => 'production' }
   ]
 
   boxes.each do |opts|
@@ -53,7 +53,7 @@ Vagrant.configure("2") do |config|
       config.vm.provision :puppet,
         :options => ["--debug", "--verbose", "--summarize"],
         :facter => { "fqdn" => "%s.sandbox.internal" % opts[:name].to_s } do |puppet|
-          puppet.manifest_file = opts[:puppetmanifest]
+          puppet.environment = "%s" % opts[:puppetenv].to_s
       end
     end
   end
