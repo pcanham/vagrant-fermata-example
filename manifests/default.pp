@@ -27,13 +27,13 @@ node default {
 
   firewall { '003 accept SMTP TCP:2500':
     dport               => 2500,
-    proto               => 'icmp',
+    proto               => 'tcp',
     action              => 'accept',
   }
 
   firewall { '004 accept HTTP TCP:80':
     dport               => 80,
-    proto               => 'icmp',
+    proto               => 'tcp',
     action              => 'accept',
   }
 

@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 $script = <<SCRIPT
+puppet module install --force puppetlabs-firewall
 puppet module install --force puppetlabs-ntp
 puppet module install --force puppetlabs-stdlib
 puppet module install --force puppetlabs-concat
@@ -15,11 +16,10 @@ SCRIPT
 
 Vagrant.configure("2") do |config|
 
-  config.vm.box = "puppetlabs-vbox-centos-65-x64"
+  config.vm.box = "puppetlabs/centos-7.2-64-puppet"
   config.vm.box_check_update = true
 
   config.vm.provider :virtualbox do |vb, override|
-    override.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-puppet.box"
     vb.gui = true
     vb.customize [
       "modifyvm", :id,
@@ -30,8 +30,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provider :vmware_fusion do |v, override|
-    override.vm.box = "puppetlabs-vmware-centos-65-x64"
-    override.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-fusion503.box"
     v.vmx["memsize"] = 1024
     v.vmx["numvcpus"] = 4
   end
@@ -55,7 +53,6 @@ Vagrant.configure("2") do |config|
       config.vm.provision :puppet,
         :options => ["--debug", "--verbose", "--summarize"],
         :facter => { "fqdn" => "%s.sandbox.internal" % opts[:name].to_s } do |puppet|
-          puppet.manifests_path = "./"
           puppet.manifest_file = opts[:puppetmanifest]
       end
     end
